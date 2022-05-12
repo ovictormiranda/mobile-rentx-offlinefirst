@@ -8,24 +8,25 @@ import ExchangeSvg from '../assets/exchange.svg';
 import PeopleSvg from '../assets/people.svg';
 import CarSvg from '../assets/car.svg';
 
-export function getAccessoryIcon(type: string) {
+export function getAccessoryIcon(type: string){
   switch (type) {
     case 'speed':
-      return SpeedSvg
+      return SpeedSvg;
     case 'acceleration':
-      return AccelerationSvg
+      return AccelerationSvg;
     case 'turning_diameter':
-      return ForceSvg
+      return ForceSvg;
     case 'gasoline_motor':
-      return GasolineSvg
+      return GasolineSvg;
     case 'electric_motor':
-      return EnergySvg
+      return EnergySvg;
     case 'hybrid_motor':
-      return HybridSvg
+      return HybridSvg;
     case 'exchange':
-      return ExchangeSvg
+      return ExchangeSvg;
     case 'seats':
-      return PeopleSvg
+      return PeopleSvg;
+
     default:
       return CarSvg;
   }

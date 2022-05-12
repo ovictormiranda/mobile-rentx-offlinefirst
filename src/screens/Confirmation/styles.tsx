@@ -1,5 +1,5 @@
-import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -30,6 +30,7 @@ export const Message = styled.Text`
   text-align: center;
 
   margin-top: 16px;
+
 `;
 
 export const Footer = styled.View`

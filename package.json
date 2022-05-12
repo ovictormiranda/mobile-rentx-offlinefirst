@@ -13,7 +13,14 @@
     "@expo-google-fonts/archivo": "^0.2.0",
     "@expo-google-fonts/inter": "^0.2.0",
     "@nozbe/watermelondb": "^0.24.0",
+
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/bottom-tabs": "^6.3.1",
+
     "@react-navigation/native": "^6.0.6",
+
+    "@react-navigation/native-stack": "^6.6.2",
+
     "@react-navigation/stack": "^6.0.11",
     "axios": "^0.24.0",
     "date-fns": "^2.26.0",

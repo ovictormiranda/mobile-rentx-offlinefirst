@@ -1,16 +1,15 @@
 import React from 'react';
-import { ViewProps } from 'react-native';
 
 import {
-  BulletView,
+  Container
 } from './styles';
 
-interface BulletProps extends ViewProps {
+interface Props {
   active?: boolean;
 }
 
-export function Bullet({ active = false, ...rest }: BulletProps) {
+export function Bullet({ active = false }: Props){
   return (
-    <BulletView active={active} {...rest} />
+    <Container active={active}/>
   );
 }

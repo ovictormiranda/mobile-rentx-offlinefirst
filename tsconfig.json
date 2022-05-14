@@ -1,6 +1,13 @@
 {
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "experimentalDecorators": true
   },
   "extends": "expo/tsconfig.base"
 }
+
+
+
+
+
+

@@ -30,20 +30,27 @@ export function Home(){
   }
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchCars() {
       try {
         const response = await api.get('/cars');
-        setCars(response.data)
-
+        if(isMounted){
+          setCars(response.data);
+        }
       } catch (error) {
         console.log(error);
-
       } finally {
-        setLoading(false);
+        if(isMounted){
+          setLoading(false);
+        }
       }
     }
 
     fetchCars();
+    return () => {
+      isMounted = false; //garantir que o estado só será atualizado enquanto estiver montando a tela
+    };    //essa função é equivalente ao 'antigo' didUnmounted
   }, []);
 
   return (

@@ -7,7 +7,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "server": "yarn json-server ./src/services/server.json --host 192.168.0.53 --port 3333 --delay 700"
+    "server": "yarn json-server ./src/services/server.json --host 192.168.2.111 --port 3333 --delay 700"
   },
   "dependencies": {
     "@expo-google-fonts/archivo": "^0.2.0",

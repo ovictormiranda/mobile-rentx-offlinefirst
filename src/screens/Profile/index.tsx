@@ -5,13 +5,17 @@ import {
   Keyboard
 } from 'react-native';
 
-import { useAuth } from '../../hooks/auth';
+import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useTheme } from 'styled-components';
 
+import { useAuth } from '../../hooks/auth';
+import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
+
 import { BackButton } from '../../components/BackButton';
+import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
 
 import {
   Container,
@@ -28,13 +32,15 @@ import {
   OptionTitle,
   Section,
 } from './styles';
-import { Input } from '../../components/Input';
-import { PasswordInput } from '../../components/PasswordInput';
 
 export function Profile(){
-  const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
+  const { user, signOut } = useAuth();
 
-  const { user } = useAuth();
+  const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState(user.name);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
+
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -42,12 +48,25 @@ export function Profile(){
     navigation.goBack();
   }
 
-  function handleSignOut() {
-
-  }
-
   function handleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
     setOption(optionSelected)
+  }
+
+  async function handleAvatarSelect() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (result.cancelled) {
+      return;
+    }
+
+    if (result.uri) {
+      setAvatar(result.uri)
+    }
   }
 
   return (
@@ -58,14 +77,14 @@ export function Profile(){
             <HeaderTop>
               <BackButton color={theme.colors.shape} onPress={handleBack} />
               <HeaderTitle>Editar Perfil</HeaderTitle>
-              <LogoutButton onPress={handleSignOut}>
+              <LogoutButton onPress={signOut}>
                 <Feather name="power" size={24} color={theme.colors.shape} />
               </LogoutButton>
             </HeaderTop>
 
             <PhotoContainer>
-              <Photo source={{ uri: 'https://pbs.twimg.com/profile_images/1448370176324472832/O-oYz53h_400x400.png'}} />
-              <PhotoButton onPress={() => {}}>
+              { !!avatar && <Photo source={{ uri: avatar }} /> }
+              <PhotoButton onPress={handleAvatarSelect}>
                 <Feather
                   name="camera"
                   size={24}
@@ -100,6 +119,7 @@ export function Profile(){
                   placeholder="Nome"
                   autoCorrect={false}
                   defaultValue={user.name}
+                  onChangeText={setName}
                 />
                 <Input
                   iconName="mail"
@@ -111,6 +131,7 @@ export function Profile(){
                   placeholder="CNH"
                   keyboardType="numeric"
                   defaultValue={user.driver_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
               :

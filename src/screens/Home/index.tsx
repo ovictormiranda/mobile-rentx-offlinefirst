@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-
+import { useNetInfo } from '@react-native-community/netinfo';
 
 import Logo from '../../assets/logo.svg';
 import  { api }  from '../../services/api';
@@ -23,6 +23,7 @@ export function Home(){
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const netInfo = useNetInfo();
   const navigation = useNavigation<any>();
 
   function handleCarDetails(car: CarDTO) {
@@ -52,6 +53,14 @@ export function Home(){
       isMounted = false; //garantir que o estado só será atualizado enquanto estiver montando a tela
     };    //essa função é equivalente ao 'antigo' didUnmounted
   }, []);
+
+  useEffect(() => {
+    if(netInfo.isConnected){
+      Alert.alert('Você está on-line!')
+    } else {
+      Alert.alert('Você está off-line!')
+    }
+  },[netInfo.isConnected]);
 
   return (
     <Container>

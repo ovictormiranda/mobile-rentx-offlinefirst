@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-import { CarDTO } from '../../dtos/CarDTO';
+import { CarDTO } from '../../database/model/Car'
 
 import Animated, {
    useSharedValue,

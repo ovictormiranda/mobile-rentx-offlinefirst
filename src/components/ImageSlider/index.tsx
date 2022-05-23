@@ -30,6 +30,7 @@ export function ImageSlider({ imagesUrl }: Props){
     setImageIndex(index)
   })
 
+
   return (
     <Container>
       <ImageIndexes>
@@ -46,7 +47,7 @@ export function ImageSlider({ imagesUrl }: Props){
         <FlatList
           data={imagesUrl}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <CarImageWrapper>
               <CarImage
                 source={{uri: item.photo}}

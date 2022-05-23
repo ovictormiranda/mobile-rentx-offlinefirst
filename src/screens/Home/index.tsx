@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -28,11 +28,11 @@ export function Home(){
   const [loading, setLoading] = useState(true);
 
   const netInfo = useNetInfo();
-  const synchronizing = useRef(false);
   const navigation = useNavigation<any>();
+  const synchronizing = useRef(false);
 
   function handleCarDetails(car: CarDTO) {
-    navigation.navigate('CarDetails', { car });
+    navigation.navigate('CarDetails', { carId: car.id });
   }
 
   async function offlineSynchronize() {
@@ -45,48 +45,53 @@ export function Home(){
         const { changes, latestVersion } = response.data;
         console.log("#### SYNC #######");
         console.log(changes);
-        console.log(JSON.stringify(response.data, null, 2));
+        console.log("#### SYNC #######");
+        console.log(response.data);
         return { changes, timestamp: latestVersion }
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users;
-        await api.post('/users/sync', user)
+        if (user) {
+          await api.post('/users/sync', user)
+        }
       },
     });
+
+    await fetchCars();
+  }
+
+  async function fetchCars() {
+    try {
+      const carCollection = database.get<ModelCar>('cars');
+      const cars = await carCollection.query().fetch();
+
+      setCars(cars);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     let isMounted = true;
 
-    async function fetchCars() {
-      try {
-        const carCollection = database.get<ModelCar>('cars')
-        const cars = await carCollection.query().fetch();
-
-        if(isMounted){
-          setCars(cars);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        if(isMounted){
-          setLoading(false);
-        }
-      }
+    if (isMounted) {
+      fetchCars();
     }
 
-    fetchCars();
     return () => {
       isMounted = false; //garantir que o estado só será atualizado enquanto estiver montando a tela
     };    //essa função é equivalente ao 'antigo' didUnmounted
   }, []);
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const syncChanges = async () => {
       if (netInfo.isConnected && !synchronizing.current) {
         synchronizing.current = true;
+
         try {
-          offlineSynchronize(); //Watermelon
+          await offlineSynchronize(); //Watermelon
         } catch (err) {
           console.log(err);
         } finally {
@@ -96,7 +101,7 @@ export function Home(){
     }
 
     syncChanges();
-  },[netInfo.isConnected])
+  },[netInfo.isConnected]));
 
 
   return (

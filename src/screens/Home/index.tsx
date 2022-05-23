@@ -45,14 +45,15 @@ export function Home(){
         const { changes, latestVersion } = response.data;
         console.log("#### SYNC #######");
         console.log(changes);
-        console.log("#### SYNC #######");
-        console.log(response.data);
+        console.log(latestVersion);
+
         return { changes, timestamp: latestVersion }
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users;
         if (user) {
-          await api.post('/users/sync', user)
+          console.log("#### ERROR #######");
+          await api.post('/users/sync', user).catch(console.log)
         }
       },
     });

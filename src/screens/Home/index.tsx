@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -28,6 +28,7 @@ export function Home(){
   const [loading, setLoading] = useState(true);
 
   const netInfo = useNetInfo();
+  const synchronizing = useRef(false);
   const navigation = useNavigation<any>();
 
   function handleCarDetails(car: CarDTO) {
@@ -42,6 +43,9 @@ export function Home(){
         .get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
 
         const { changes, latestVersion } = response.data;
+        console.log("#### SYNC #######");
+        console.log(changes);
+        console.log(JSON.stringify(response.data, null, 2));
         return { changes, timestamp: latestVersion }
       },
       pushChanges: async ({ changes }) => {
@@ -78,9 +82,20 @@ export function Home(){
   }, []);
 
   useEffect(() => {
-    if(netInfo.isConnected == true) {
-      offlineSynchronize()
+    const syncChanges = async () => {
+      if (netInfo.isConnected && !synchronizing.current) {
+        synchronizing.current = true;
+        try {
+          offlineSynchronize(); //Watermelon
+        } catch (err) {
+          console.log(err);
+        } finally {
+          synchronizing.current = false;
+        }
+      }
     }
+
+    syncChanges();
   },[netInfo.isConnected])
 
 

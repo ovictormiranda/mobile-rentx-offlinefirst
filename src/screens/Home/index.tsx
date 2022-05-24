@@ -43,17 +43,13 @@ export function Home(){
         .get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
 
         const { changes, latestVersion } = response.data;
-        console.log("#### SYNC #######");
-        console.log(changes);
-        console.log(latestVersion);
 
         return { changes, timestamp: latestVersion }
       },
       pushChanges: async ({ changes }) => {
         const user = changes.users;
         if (user) {
-          console.log("#### ERROR #######");
-          await api.post('/users/sync', user).catch(console.log)
+          await api.post('/users/sync', user)
         }
       },
     });

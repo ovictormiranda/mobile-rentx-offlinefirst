@@ -9,6 +9,7 @@ import { Routes } from './src/routes';
 import theme from './src/styles/theme';
 import { AppProvider } from './src/hooks';
 
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -18,8 +19,9 @@ export default function App() {
     Archivo_600SemiBold
   })
 
-  if (!fontsLoaded)
+  if (!fontsLoaded) {
     return <AppLoading />
+  }
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { useTheme } from 'styled-components';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import { CarDTO } from '../../dtos/CarDTO';
+import { api } from '../../services/api';
 
 import Animated, {
-   useSharedValue,
-   useAnimatedScrollHandler,
-   useAnimatedStyle,
-   interpolate,
-   Extrapolate
-  } from 'react-native-reanimated';
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate
+} from 'react-native-reanimated';
 
 import { Accessory } from '../../components/Accessory';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -37,8 +39,6 @@ import {
   Footer,
   OfflineInfo,
 } from './styles';
-import { useNetInfo } from '@react-native-community/netinfo';
-import { api } from '../../services/api';
 
 interface Params {
   carId: string;
@@ -177,7 +177,10 @@ export function CarDetails(){
         {
           netInfo.isConnected === false &&
           <OfflineInfo>
-            <Button title="Escolher periodo do aluguel" onPress={handleConfirmRental}/>
+            <Button
+              title="Escolher periodo do aluguel"
+              onPress={handleConfirmRental}
+            />
           </OfflineInfo>
         }
       </Footer>

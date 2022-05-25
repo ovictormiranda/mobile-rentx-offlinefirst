@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 import BrandSvg from '../../assets/brand.svg'
 import LogoSvg from '../../assets/logo.svg'
@@ -53,18 +53,24 @@ export function Splash(){
   });
 
   function startApp() {
-    navigation.navigate('SignIn');
+    navigation.dispatch(StackActions.replace('Home'));
   }
 
   useEffect(() => {
+    let mounted = true;
+
     splashAnimation.value = withTiming(
       50,
       { duration: 2000 },
       () => {
-        'worklet'
-        runOnJS(startApp)();
+        if (mounted) {
+          'worklet'
+          runOnJS(startApp)();
+        }
       }
-    )
+    );
+
+    return () => { mounted = false }
   }, []);
 
   return (

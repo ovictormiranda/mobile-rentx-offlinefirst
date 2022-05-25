@@ -177,10 +177,7 @@ export function CarDetails(){
         {
           netInfo.isConnected === false &&
           <OfflineInfo>
-            <Button
-              title="Escolher periodo do aluguel"
-              onPress={handleConfirmRental}
-            />
+            Conecte-se a internet para ver mais detalhes e agendar seu carro.
           </OfflineInfo>
         }
       </Footer>

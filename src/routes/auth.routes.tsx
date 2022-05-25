@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import { Confirmation } from '../screens/Confirmation';
 
-import { Splash } from '../screens/Splash';
 import { SignIn } from '../screens/SignIn';
 import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep';
 import { SignUpSecondStep } from '../screens/SignUp/SignUpSecondStep';
@@ -14,12 +13,8 @@ export function AuthRoutes() {
   return(
     <Navigator
       screenOptions={({ route }) => ({headerShown: false})}
-      initialRouteName="Splash"
+      initialRouteName="SignIn"
     >
-      <Screen
-        name="Splash"
-        component={Splash}
-      />
       <Screen
         name="SignIn"
         component={SignIn}
